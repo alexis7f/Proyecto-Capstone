@@ -1,19 +1,18 @@
 public class Capstone {
-    private int with;
+    private int width;
     private int height;
     private int generations;
     private int delay;
-    private String initialMapState;
+    private String[][] initialMapState;
     private int movement;
 
     Capstone(int with, int height, int generations, int delay, String initialMapState, int movement) {
         setHeight(height);
-        setWith(with);
+        setWidth(with);
         setGenerations(generations);
         setDelay(delay);
-        setInitialMapState(initialMapState);
         setMovement(movement);
-
+        setInitialMapState(initialMapState);
     }
 
 
@@ -21,7 +20,7 @@ public class Capstone {
         return delay;
     }
 
-    public static void printMatrix(int[][] matrix) {
+    public static void printMatrix(String[][] matrix) {
         for (int i = 0; i < matrix.length; i++) { // filas
             for (int j = 0; j < matrix[i].length; j++) { // columnas
                 System.out.print(matrix[i][j] + " ");
@@ -40,9 +39,15 @@ public class Capstone {
             }
         }
         if (isDelayAllowed) {
-            this.delay = delay;
+            if (delay == 0) {
+                System.out.println("speed = [No  Presente]");
+            } else {
+                this.delay = delay;
+                System.out.println("speed = " + getDelay());
+            }
+
         } else {
-            System.out.println("El valor del tiempo no esta permitido!");
+            System.out.println("speed = [Invalido]");
         }
     }
 
@@ -53,8 +58,9 @@ public class Capstone {
     public void setGenerations(int generations) {
         if (generations >= 0 && generations < 1000) {
             this.generations = generations;
+            System.out.println("generations = " + getGenerations());
         } else {
-            System.out.println("El valor de las generaciones no esta permitido!");
+            System.out.println("generations = [Invalido]");
         }
     }
 
@@ -73,17 +79,18 @@ public class Capstone {
         }
         if (isHeightAllowed) {
             this.height = height;
+            System.out.println("height = " + getHeight());
         } else {
-            System.out.println("El valor del alto no esta permitido!");
+            System.out.println("height = [Invalido]");
         }
 
     }
 
-    public int getWith() {
-        return with;
+    public int getWidth() {
+        return width;
     }
 
-    public void setWith(int with) {
+    public void setWidth(int width) {
         final int[] ALLOWED_WITH_VALUES = {5, 10, 15, 20, 40, 80};
         boolean isWithAllowed = false;
         for (int i = 0; i < ALLOWED_WITH_VALUES.length; i++) {
@@ -93,81 +100,66 @@ public class Capstone {
             }
         }
         if (isWithAllowed) {
-            this.with = with;
+            this.width = width;
+            System.out.println("width = " + getWidth());
         } else {
-            System.out.println("El valor del ancho no esta permitido!");
+            System.out.println("width = [Invalido]");
         }
     }
 
-    public String getInitialMapState() {
+    public String[][] getInitialMapState() {
         return initialMapState;
     }
 
     public void setInitialMapState(String initialMapState) {
-        if (initialMapState == "rnd") {
-            //tarea ; ver como generar esto aleatoriamente , se puede usar math ramdom
-            this.initialMapState = initialMapState;
+        String[][] completeInitialMap = new String[getHeight()][getWidth()];
+        if (initialMapState.isEmpty()) {
+            System.out.println("map = [No  Presente]");
+        } else if (initialMapState.equals("rnd")) {
+            for (int i = 0; i < getHeight(); i++) {
+                for (int j = 0; j < getWidth(); j++) {
+                    int num = (int) (Math.random() * 4); // 0, 1, 2 o 3
+                    completeInitialMap[i][j] = num + "";
+                }
+            }
         } else {
-            int rowCounter = 0;
-            int[][] completeInitialMap = new int[getHeight()][getWith()];
-//h=3 w=2
-            //h=filas
-            //w=columnas
-            // [[],[]]
-            // [[],[]]
-            // [[],[]]
+            String[] initialMapRow = initialMapState.split("#", getWidth());
 
-            for (int i = 0; i < initialMapState.length(); i++) {
-                if (initialMapState.charAt(i) == '#') {
-                    rowCounter++;
-                }
-            }
-            String[] initialMapRow = initialMapState.split("#", rowCounter);
             for (int i = 0; i < initialMapRow.length; i++) {
-                System.out.println("Fila " + (i + 1) + ": '" + initialMapRow[i] + "'");
-                if (initialMapRow[i].length() != this.with) {
-                    if (initialMapRow[i].length() > this.with) {
-                        System.out.println("Error en el mapa inicial hay una fila que sobrepasa los limitas del ancho");
-                        System.out.println("La fila: " + initialMapRow[i] + " pasa el limite de la grilla que es de : " + this.with);
-                        System.out.close();
-                    } else {
-                        int completeRowLength = this.with - initialMapRow[i].length();
+                //Validaciones
+                if (initialMapRow[i].length() > getWidth()) {
+                    System.out.println("En el mapa inicial hay una fila que sobrepasa los limitas del ancho");
+                    System.out.println("La fila: " + initialMapRow[i] + " pasa el limite de la grilla que es de : " + getWidth());
+                    System.out.close();
+                }
 
-                        if (completeRowLength > 0) {
-                            String rowComplete = initialMapRow[i];
-                            if (initialMapRow[i].equals("#")) {
-                                rowComplete = "";
-                                for (int j = 0; j < this.with; j++) {
-
-                                    rowComplete = rowComplete + "0";
-                                }
-                            } else {
-                                for (int j = 0; j < completeRowLength; j++) {
-
-                                    rowComplete = rowComplete + "0";
-                                }
-
-                                for (int h = 0; h < this.with; h++) {
-
-                                    completeInitialMap[i][h] =Integer.parseInt(String.valueOf(rowComplete.charAt(h)));
-                                }
-                            }
+                if (initialMapRow.length > getHeight()) {
+                    System.out.println("En el mapa inicial hay una columna que sobrepasa los limitas del alto");
+                    System.out.println("Hay " + initialMapRow.length + " filas que sobrepasan el alto de la grilla que es de : " + getHeight());
+                    System.out.close();
+                }
 
 
-                        } else {
-                            for (int h = 0; h < this.with; h++) {
-                                completeInitialMap[i][h] = Integer.parseInt(String.valueOf(initialMapRow[i].charAt(h)));
-                            }
-                        }
-
+                if (initialMapRow[i].isEmpty()) {
+                    for (int j = 0; j < getWidth(); j++) {
+                        initialMapRow[i] = initialMapRow[i] + "0";
                     }
-
+                }
+                if (initialMapRow[i].length() != getWidth()) {
+                    int different = getWidth() - initialMapRow[i].length();
+                    for (int j = 0; j < different; j++) {
+                        initialMapRow[i] = initialMapRow[i] + "0";
+                    }
+                }
+                for (int j = 0; j < getWidth(); j++) {
+                    completeInitialMap[i][j] = initialMapRow[i].substring(j, j + 1);
                 }
 
             }
-            printMatrix(completeInitialMap);
 
         }
+        System.out.println("Población Inicial:");
+        printMatrix(completeInitialMap);
 
     }
 
@@ -176,6 +168,19 @@ public class Capstone {
     }
 
     public void setMovement(int movement) {
-        this.movement = movement;
+        final int[] ALLOWED_MOVEMENT_VALUES = {1, 2, 3, 4};
+        boolean isMovementAllowed = false;
+        for (int i = 0; i < ALLOWED_MOVEMENT_VALUES.length; i++) {
+            if (height == ALLOWED_MOVEMENT_VALUES[i]) {
+                isMovementAllowed = true;
+                break;
+            }
+        }
+        if (isMovementAllowed) {
+            this.movement = movement;
+            System.out.println("n = " + getMovement());
+        } else {
+            System.out.println("n = [Invalido]");
+        }
     }
 }
