@@ -3,7 +3,7 @@
 public class Main {
     public static void main(String[] args) {
         final char[] VALIDATED_KEYS = {'w', 'h', 'g', 's', 'm', 'n'};
-        int with = 0, height = 0, generations = 0, delay = 0, movement = 0;
+        int with = 0, height = 0, generations=-1 , delay = 0, movement = -1;
         String initialMapState = "";
 
         for (int i = 0; i < args.length; i++) {
@@ -57,7 +57,7 @@ public class Main {
 //        System.out.println("tiempo ;" + delay);
 //        System.out.println("mapa inicial ;" + initialMapState);
 //        System.out.println("movimiento ;" + movement);
-        Capstone captoneVersion01 = new Capstone(with ,height , generations , delay , initialMapState , movement);
+         new Capstone(with ,height , generations , delay , initialMapState , movement);
 
     }
 }

@@ -3,33 +3,30 @@ public class Capstone {
     private int height;
     private int generations;
     private int delay;
-    private String[][] initialMapState;
     private int movement;
 
     Capstone(int with, int height, int generations, int delay, String initialMapState, int movement) {
-        setHeight(height);
-        setWidth(with);
-        setGenerations(generations);
-        setDelay(delay);
+        boolean isHeightAllowed = setHeight(height);
+        boolean isWithAllowed = setWidth(with);
+        boolean isGenerationsAllowed = setGenerations(generations);
+        boolean isDelayAllowed = setDelay(delay);
         setMovement(movement);
-        setInitialMapState(initialMapState);
-    }
 
+        if (isHeightAllowed && isWithAllowed && isGenerationsAllowed && isDelayAllowed) {
+            String[][] completeInitialMap = setInitialMapState(initialMapState);
+            new RenderGenerations(completeInitialMap , getGenerations(), getDelay() , movement);
+        } else {
+            System.out.println("Capstone se a cerrado");
+            System.out.close();
+        }
+
+    }
 
     public int getDelay() {
         return delay;
     }
 
-    public static void printMatrix(String[][] matrix) {
-        for (int i = 0; i < matrix.length; i++) { // filas
-            for (int j = 0; j < matrix[i].length; j++) { // columnas
-                System.out.print(matrix[i][j] + " ");
-            }
-            System.out.println();
-        }
-    }
-
-    public void setDelay(int delay) {
+    public boolean setDelay(int delay) {
         final int[] ALLOWED_DELAY_VALUES = {0, 250, 500, 1000, 5000};
         boolean isDelayAllowed = false;
         for (int i = 0; i < ALLOWED_DELAY_VALUES.length; i++) {
@@ -40,35 +37,40 @@ public class Capstone {
         }
         if (isDelayAllowed) {
             if (delay == 0) {
-                System.out.println("speed = [No  Presente]");
+                System.out.println("speed = Infinito");
             } else {
                 this.delay = delay;
                 System.out.println("speed = " + getDelay());
             }
-
         } else {
             System.out.println("speed = [Invalido]");
         }
+        return isDelayAllowed;
     }
 
     public int getGenerations() {
         return generations;
     }
 
-    public void setGenerations(int generations) {
+    public boolean setGenerations(int generations) {
+        boolean isGenerationsAllowed = false;
         if (generations >= 0 && generations < 1000) {
             this.generations = generations;
+            isGenerationsAllowed = true;
             System.out.println("generations = " + getGenerations());
+        } else if(generations == -1) {
+            System.out.println("generations = [No presente]");
         } else {
             System.out.println("generations = [Invalido]");
         }
+        return isGenerationsAllowed;
     }
 
     public int getHeight() {
         return height;
     }
 
-    public void setHeight(int height) {
+    public boolean setHeight(int height) {
         final int[] ALLOWED_HEIGHT_VALUES = {5, 10, 15, 20, 40};
         boolean isHeightAllowed = false;
         for (int i = 0; i < ALLOWED_HEIGHT_VALUES.length; i++) {
@@ -83,18 +85,18 @@ public class Capstone {
         } else {
             System.out.println("height = [Invalido]");
         }
-
+        return isHeightAllowed;
     }
 
     public int getWidth() {
         return width;
     }
 
-    public void setWidth(int width) {
+    public boolean setWidth(int width) {
         final int[] ALLOWED_WITH_VALUES = {5, 10, 15, 20, 40, 80};
         boolean isWithAllowed = false;
         for (int i = 0; i < ALLOWED_WITH_VALUES.length; i++) {
-            if (height == ALLOWED_WITH_VALUES[i]) {
+            if (width == ALLOWED_WITH_VALUES[i]) {
                 isWithAllowed = true;
                 break;
             }
@@ -105,13 +107,10 @@ public class Capstone {
         } else {
             System.out.println("width = [Invalido]");
         }
+        return isWithAllowed;
     }
 
-    public String[][] getInitialMapState() {
-        return initialMapState;
-    }
-
-    public void setInitialMapState(String initialMapState) {
+    public String[][] setInitialMapState(String initialMapState) {
         String[][] completeInitialMap = new String[getHeight()][getWidth()];
         if (initialMapState.isEmpty()) {
             System.out.println("map = [No  Presente]");
@@ -158,20 +157,18 @@ public class Capstone {
             }
 
         }
-        System.out.println("Población Inicial:");
-        printMatrix(completeInitialMap);
-
+        return completeInitialMap;
     }
 
     public int getMovement() {
         return movement;
     }
 
-    public void setMovement(int movement) {
+    public boolean setMovement(int movement) {
         final int[] ALLOWED_MOVEMENT_VALUES = {1, 2, 3, 4};
         boolean isMovementAllowed = false;
         for (int i = 0; i < ALLOWED_MOVEMENT_VALUES.length; i++) {
-            if (height == ALLOWED_MOVEMENT_VALUES[i]) {
+            if (movement == ALLOWED_MOVEMENT_VALUES[i]) {
                 isMovementAllowed = true;
                 break;
             }
@@ -179,8 +176,13 @@ public class Capstone {
         if (isMovementAllowed) {
             this.movement = movement;
             System.out.println("n = " + getMovement());
-        } else {
+        } else if(movement == -1){
+            this.movement = 1;
+            System.out.println("n = " + getMovement());
+        }
+        else {
             System.out.println("n = [Invalido]");
         }
+        return isMovementAllowed;
     }
 }
