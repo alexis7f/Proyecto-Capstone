@@ -11,12 +11,10 @@ public class RenderGenerations {
                     if (i == 1) {
                         printMatrixWithCoordinates(map);
                     } else if (typeOfGeneration(i)) {
-
-                        String[][] newMap = pairGeneration(map, movement, generations);
+                        String[][] newMap = pairGeneration(map, movement, i);
                         printMatrixWithCoordinates(newMap);
                         map = newMap;
                     } else {
-
                         String[][] newMap = inPairGeneration(map, i);
                         printMatrixWithCoordinates(newMap);
                         map = newMap;
@@ -36,7 +34,7 @@ public class RenderGenerations {
                     if (i == 1) {
                         printMatrixWithCoordinates(map);
                     } else if (typeOfGeneration(i)) {
-                        String[][] newMap = pairGeneration(map, movement, generations);
+                        String[][] newMap = pairGeneration(map, movement , i);
                         printMatrixWithCoordinates(newMap);
                         map = newMap;
                     } else if (!typeOfGeneration(i)) {
@@ -54,7 +52,7 @@ public class RenderGenerations {
 
     }
 
-    public String[][] pairGeneration(String[][] map, int movement , int generations) {
+    public String[][] pairGeneration(String[][] map, int movement , int generations ) {
         String[][] newMap = new String[map.length][map[0].length];
         // Copiar el mapa original
         for (int i = 0; i < map.length; i++) {
@@ -69,7 +67,7 @@ public class RenderGenerations {
                 //(los animales no se reproducen
                 //en estas generaciones)
                 if (value.equals("0")) {
-                    newMap = emptyBoxHandler(newMap, map, generations, i, j , false);
+                    newMap = emptyBoxHandler(newMap, map, generations, i, j , false );
                 }
                 if (value.equals("1")) {
                     newMap = treeBoxHandler(newMap, map, i, j);
@@ -86,7 +84,7 @@ public class RenderGenerations {
         return newMap;
     }
 
-    public String[][] inPairGeneration(String[][] map, int generations) {
+    public String[][] inPairGeneration(String[][] map,  int currentGeneration) {
 
         String[][] newMap = new String[map.length][map[0].length];
         // Copiar el mapa original
@@ -101,7 +99,7 @@ public class RenderGenerations {
                 //Se procesan las transformaciones de celdas vacías
                 //reproduciomos los animales
                 if (value.equals("0")) {
-                    newMap = emptyBoxHandler(newMap, map, generations, i, j , true);
+                    newMap = emptyBoxHandler(newMap, map, currentGeneration, i, j , true );
                 }
                 //Se evalúan las condiciones de supervivencia y reproducción.
                 if (value.equals("1")) {
