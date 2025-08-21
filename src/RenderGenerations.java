@@ -1,7 +1,11 @@
 public class RenderGenerations {
     RenderGenerations(String[][] initialMapState, int generations, int delay, int movement) {
         String[][] map = initialMapState;
-
+        System.out.println();
+       for(int i = 0 ; i < map[0].length ; i++){
+           System.out.print("➖\u200B");
+       }
+       System.out.println();
         if (generations == 0) {
             int i = 1;
             while (true) {
@@ -28,18 +32,17 @@ public class RenderGenerations {
             }
         } else {
             for (int i = 1; i <= generations; i++) {
-                System.out.println("Render " + i);
-
+                System.out.println("Generación n° " + i);
                 try {
                     if (i == 1) {
-                        printMatrixWithCoordinates(map);
+                        printMatrix(map);
                     } else if (typeOfGeneration(i)) {
                         String[][] newMap = pairGeneration(map, movement , i);
-                        printMatrixWithCoordinates(newMap);
+                        printMatrix(newMap);
                         map = newMap;
                     } else if (!typeOfGeneration(i)) {
                         String[][] newMap = inPairGeneration(map, i);
-                        printMatrixWithCoordinates(newMap);
+                        printMatrix(newMap);
                         map = newMap;
                     }
                     Thread.sleep(delay);
@@ -47,6 +50,9 @@ public class RenderGenerations {
                     e.printStackTrace();
                 }
             }
+        }
+        for(int i = 0 ; i < map[0].length ; i++){
+            System.out.print("➖\u200B");
         }
 
 
@@ -231,8 +237,9 @@ public class RenderGenerations {
         }
         //Nace un animal si hay exactamente 2 animales en el anillo interno y al menos un
         // árbol y agua en cualquiera de los dos vecindarios. (Solo en generaciones impares)
-        int neighborInfluence = treesExternal + treesInternal + waterInternal + waterExternal;
-        if (animalInternal == 2 && (neighborInfluence > 0) && animalReproduction) {
+        int waterTotal = waterExternal + waterInternal;
+        int treeTotal = treesInternal + treesExternal;
+        if (animalInternal == 2 && (waterTotal > 0) && (treeTotal > 0) && animalReproduction) {
                 newMap[i][j] = "2";
         }
         //Nace agua si hay agua en alguna de las casillas de la fila de arriba del
@@ -273,7 +280,6 @@ public class RenderGenerations {
         int treesExternal = 0;
         int waterInternal = 0;
         int waterExternal = 0;
-        boolean isTopWaterInternal = false;
         for (int k = 0; k < map.length; k++) {
             for (int t = 0; t < map[k].length; t++) {
                 if (isImmediateNeighborhood(k, t, i, j) && map[k][t].equals("1")) {

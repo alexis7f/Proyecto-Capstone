@@ -16,7 +16,11 @@ public class Capstone {
             String[][] completeInitialMap = setInitialMapState(initialMapState);
             new RenderGenerations(completeInitialMap , getGenerations(), getDelay() , movement);
         } else {
-            System.out.println("Capstone se a cerrado");
+            if (initialMapState.isEmpty()) {
+                System.out.println("map = [No  Presente]"+ " ❌");
+            }
+            System.out.println("➖\u200B➖\u200B➖\u200B➖\u200B➖\u200B➖\u200B➖\u200B➖\u200B");
+            System.out.println("Capstone se a cerrado" + " ⚠\uFE0F\u200B");
             System.out.close();
         }
 
@@ -37,13 +41,16 @@ public class Capstone {
         }
         if (isDelayAllowed) {
             if (delay == 0) {
-                System.out.println("speed = Infinito");
+                System.out.println("speed = Infinito"+ " ✅");
             } else {
                 this.delay = delay;
-                System.out.println("speed = " + getDelay());
+                System.out.println("speed = " + getDelay() + " ✅");
             }
-        } else {
-            System.out.println("speed = [Invalido]");
+        } else if (delay == -1) {
+            System.out.println("speed = [No presente]" + " ❌");
+        }
+        else {
+            System.out.println("speed = [Invalido]" + " ❌");
         }
         return isDelayAllowed;
     }
@@ -57,11 +64,11 @@ public class Capstone {
         if (generations >= 0 && generations < 1000) {
             this.generations = generations;
             isGenerationsAllowed = true;
-            System.out.println("generations = " + getGenerations());
+            System.out.println("generations = " + getGenerations() + " ✅");
         } else if(generations == -1) {
-            System.out.println("generations = [No presente]");
+            System.out.println("generations = [No presente]"+ " ❌");
         } else {
-            System.out.println("generations = [Invalido]");
+            System.out.println("generations = [Invalido]"+ " ❌");
         }
         return isGenerationsAllowed;
     }
@@ -81,9 +88,11 @@ public class Capstone {
         }
         if (isHeightAllowed) {
             this.height = height;
-            System.out.println("height = " + getHeight());
+            System.out.println("height = " + getHeight() + " ✅");
+        } else if(height == -1) {
+            System.out.println("height = [No presente]"+ " ❌");
         } else {
-            System.out.println("height = [Invalido]");
+            System.out.println("height = [Invalido]"+ " ❌");
         }
         return isHeightAllowed;
     }
@@ -103,18 +112,18 @@ public class Capstone {
         }
         if (isWithAllowed) {
             this.width = width;
-            System.out.println("width = " + getWidth());
+            System.out.println("width = " + getWidth() + " ✅");
+        } else if(width == -1) {
+            System.out.println("width = [No presente]"+ " ❌");
         } else {
-            System.out.println("width = [Invalido]");
+            System.out.println("width = [Invalido]"+ " ❌");
         }
         return isWithAllowed;
     }
 
     public String[][] setInitialMapState(String initialMapState) {
         String[][] completeInitialMap = new String[getHeight()][getWidth()];
-        if (initialMapState.isEmpty()) {
-            System.out.println("map = [No  Presente]");
-        } else if (initialMapState.equals("rnd")) {
+        if (initialMapState.equals("rnd")) {
             for (int i = 0; i < getHeight(); i++) {
                 for (int j = 0; j < getWidth(); j++) {
                     int num = (int) (Math.random() * 4); // 0, 1, 2 o 3
@@ -175,13 +184,13 @@ public class Capstone {
         }
         if (isMovementAllowed) {
             this.movement = movement;
-            System.out.println("n = " + getMovement());
+            System.out.println("n = " + getMovement() + " ✅");
         } else if(movement == -1){
             this.movement = 1;
-            System.out.println("n = " + getMovement());
+            System.out.println("n = " + "default (1)" + " ✅");
         }
         else {
-            System.out.println("n = [Invalido]");
+            System.out.println("n = [Invalido]"+ " ❌");
         }
         return isMovementAllowed;
     }
