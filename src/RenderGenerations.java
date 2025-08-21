@@ -7,12 +7,17 @@ public class RenderGenerations {
        }
        System.out.println();
         if (generations == 0) {
-            int i = 1;
+            int i = 0;
             while (true) {
-                System.out.println("Render " + i);
+                if(i == 0){
+                    System.out.println("Generación inicial");
+                }else {
+                    System.out.println("Generación " + i);
+                }
+
 
                 try {
-                    if (i == 1) {
+                    if (i == 0) {
                         printMatrixWithCoordinates(map);
                     } else if (typeOfGeneration(i)) {
                         String[][] newMap = pairGeneration(map, movement, i);
@@ -31,10 +36,14 @@ public class RenderGenerations {
                 i++; // aumenta el contador infinito
             }
         } else {
-            for (int i = 1; i <= generations; i++) {
-                System.out.println("Generación n° " + i);
+            for (int i = 0; i <= generations; i++) {
+                if(i == 0){
+                    System.out.println("Generación inicial");
+                }else {
+                    System.out.println("Generación " + i);
+                }
                 try {
-                    if (i == 1) {
+                    if (i == 0) {
                         printMatrix(map);
                     } else if (typeOfGeneration(i)) {
                         String[][] newMap = pairGeneration(map, movement , i);
